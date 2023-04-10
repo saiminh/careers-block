@@ -24,9 +24,16 @@
  function render_career_meta() {
   $id = get_the_ID();
   $meta = get_metadata( 'post', $id );
+  $title = get_the_title( $id );
+  $linkparams = '?candidature='.urlencode($title);
   if ( isset($meta['duree'][0]) ) {
     $duration = $meta['duree'][0];
     $content = '<div class="role"><span class="label">Role:</span> '.sprintf($duration).'</div>';
+    if ($duration == 'Full time') {
+      $linkparams = $linkparams.'&contrat=CDI';
+    } elseif (strpos($duration, 'Internship') !== false) {
+      $linkparams = $linkparams.'&contrat=Apprentissage';
+    }
   }
   if ( isset($meta['location'][0]) ) {
     $location = $meta['location'][0];
@@ -36,10 +43,10 @@
     $startdate = $meta['date_de_debut'][0];
     $content = $content.'<div class="startdate"><span class="label">Start date:</span> '.sprintf($startdate).'</div>';
   }
-  // if ( isset($meta['type_d_ejob'][0]) ) {
-  //   $department = $meta['type_d_ejob'][0];
-  //   $content = $content.'<div class="role">Department: '.sprintf($department).'</div>';
-  // }
+  if ( isset($meta['type_d_ejob'][0]) ) {
+    $department = $meta['type_d_ejob'][0];
+    $linkparams = $linkparams.'&service='.$department;
+  }
   // if ( isset($meta['destinataire'][0]) ) {
   //   $destination = $meta['destinataire'][0];
   //   $content = $content.'<div class="destination">Destination: '.sprintf($destination).'</div>';
@@ -73,7 +80,7 @@
             padding-right:20px;
             padding-bottom:10px;
             padding-left:20px;"
-          href="/apply">
+          href="/apply/'.$linkparams.'">
           Apply
         </a>
       </div>
