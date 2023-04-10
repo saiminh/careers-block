@@ -1,0 +1,42 @@
+/**
+ * The following styles get applied both on the front of your site
+ * and in the editor.
+ *
+ * Replace them with your own styles or remove the file completely.
+ */
+ .career-data {
+  background-color: var(--wp--preset--color--offwhite);
+  padding: 1rem;
+}
+.career-title,
+.editor-styles-wrapper .wp-block-post-title.career-title {
+  font-size: var(--wp--preset--font-size--25);
+  margin: 0 0 .75em 0;
+}
+.role, .location, .startdate {
+  font-size: var(--wp--preset--font-size--16);
+  text-transform: uppercase;
+  margin: 0 0 .75em 0;
+}
+.label {
+  font-size: 0.875em;
+  text-transform: none;
+}
+.career-buttons {
+  margin: 1.5em 0 1em 0;
+}
+.pdf-link {
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  background-color: transparent;
+  color: currentColor;
+  border-width: 1px;
+}
+.apply-link {
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+}

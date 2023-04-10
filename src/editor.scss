@@ -1,0 +1,22 @@
+ .wp-block-button .wp-block-button__link.is-style-outline:not(.has-background), 
+ .wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background),
+ .editor-styles-wrapper .wp-block-button .wp-block-button__link.is-style-outline, 
+ .editor-styles-wrapper .wp-block-button.is-style-outline > .wp-block-button__link,
+ .editor-styles-wrapper .wp-element-button, 
+ .editor-styles-wrapper .wp-block-button__link {
+   &.pdf-link {
+     padding-top: 10px;
+     padding-right: 20px;
+     padding-bottom: 10px;
+     padding-left: 20px;
+     background-color: transparent;
+     color: currentColor;
+     border-width: 1px;
+   }
+   &.apply-link {
+     padding-top: 10px;
+     padding-right: 20px;
+     padding-bottom: 10px;
+     padding-left: 20px;
+   }
+ }
