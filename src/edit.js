@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 import { useBlockProps, MediaPlaceholder } from '@wordpress/block-editor';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { useState } from '@wordpress/element';
-import { TextControl } from '@wordpress/components';
+import { TextControl, SelectControl } from '@wordpress/components';
 import { store as coreStore } from '@wordpress/core-data';
 import './editor.scss';
 
@@ -34,11 +34,20 @@ export default function Edit(
     [ postType, postId ]
   );
 
+  function sanitizeContractType( type ) {
+    if ( type == 'Apprentissage' || type == 'Stage' ) {
+      return 'Internship';
+    }
+    else {
+      return type;
+    }
+  }
       
   const { editEntityRecord } = useDispatch( coreStore );
   const [ location, setLocation ] = useState( meta.location );
   const [ duration, setDuration ] = useState( meta.duree );
   const [ startdate, setStartDate ] = useState( meta.date_de_debut );
+  const [ type, setType ] = useState( sanitizeContractType(meta.type_de_contrat) );
   const [ pdf, setPdf ] = useState( meta.lien_different );
 
   const updateMetaValue = ( newValue, field ) => {
@@ -69,6 +78,13 @@ export default function Edit(
         meta: newMeta,
       } );
       setPdf( newValue );
+    }
+    if (field == 'type_de_contrat' ) { 
+      const newMeta = { ...meta, type_de_contrat: newValue };
+      editEntityRecord( 'postType', postType, postId, {
+        meta: newMeta,
+      } );
+      setType( newValue );
     }
   };
   const isDescendentOfQueryLoop = Number.isFinite( queryId );
@@ -117,6 +133,17 @@ export default function Edit(
           label={ __( 'Start Date', 'career-block' ) }
           value={ startdate }
           onChange={ ( newValue ) => updateMetaValue( newValue, 'date_de_debut' ) } 
+        />
+        <SelectControl
+          label={ __( 'Type of contract', 'career-block' ) }
+          value={ type }
+          options={ [
+            { label: 'CDI', value: 'CDI' },
+            { label: 'CDD', value: 'CDD' },
+            { label: 'Internship', value: 'Internship' },
+            { label: 'Freelance', value: 'Freelance' },
+          ] }
+          onChange={ ( newValue ) => updateMetaValue( newValue, 'type_de_contrat' ) }
         />
         <MediaPlaceholder
           icon={ 'pdf' }

@@ -30,11 +30,6 @@
   if ( isset($meta['duree'][0]) ) {
     $duration = $meta['duree'][0];
     $content = '<div class="role"><span class="label">Role:</span> '.sprintf($duration).'</div>';
-    if ($duration == 'Full time') {
-      $linkparams = $linkparams.'&contrat=CDI';
-    } elseif (strpos($duration, 'Internship') !== false) {
-      $linkparams = $linkparams.'&contrat=Apprentissage';
-    }
   }
   if ( isset($meta['location'][0]) ) {
     $location = $meta['location'][0];
@@ -48,44 +43,59 @@
     $department = $meta['type_d_ejob'][0];
     $linkparams = $linkparams.'&service='.$department;
   }
+  if ( isset($meta['type_de_contrat'][0]) ) {
+    if ( 
+      $meta['type_de_contrat'][0] == 'Apprentissage' OR 
+      $meta['type_de_contrat'][0] == 'Stage') {
+      $linkparams = $linkparams.'&contrat=Internship';
+    }
+    else {
+      $linkparams = $linkparams.'&contrat='.$meta['type_de_contrat'][0];    
+    }
+  }
   // if ( isset($meta['destinataire'][0]) ) {
   //   $destination = $meta['destinataire'][0];
   //   $content = $content.'<div class="destination">Destination: '.sprintf($destination).'</div>';
   // }
   if ( isset($meta['lien_different'][0]) ) {
     $pdflink = $meta['lien_different'][0];
-
-    $buttons = '
-      <div class="wp-block-buttons is-layout-flex career-buttons">
-        <div class="wp-block-button is-style-outline">
-          <a 
-            class="wp-block-button__link wp-element-button pdf-link" 
-            style="
-              padding-top:10px;
-              padding-right:20px;
-              padding-bottom:10px;
-              padding-left:20px;
-              background-color: transparent;
-              color: currentColor;
-              border-width: 1px;"
-            target="_blank"
-            href="'.sprintf($pdflink).'">
-            Learn More
-          </a>
-        </div>
-      <div class="wp-block-button is-style-fill">
+    $pdf_button_markup = '
+      <div class="wp-block-button is-style-outline">
         <a 
-          class="wp-block-button__link wp-element-button apply-link" 
+          class="wp-block-button__link wp-element-button pdf-link" 
           style="
             padding-top:10px;
             padding-right:20px;
             padding-bottom:10px;
-            padding-left:20px;"
-          href="/apply/'.$linkparams.'">
-          Apply
+            padding-left:20px;
+            background-color: transparent;
+            color: currentColor;
+            border-width: 1px;"
+          target="_blank"
+          href="'.sprintf($pdflink).'">
+          Learn More
         </a>
       </div>
-    </div>';
+    ';
+    if ($pdflink == '') {
+      $pdf_button_markup = '';
+    }
+    $buttons = '
+      <div class="wp-block-buttons is-layout-flex career-buttons">'
+        .$pdf_button_markup.
+        '<div class="wp-block-button is-style-fill">
+          <a 
+            class="wp-block-button__link wp-element-button apply-link" 
+            style="
+              padding-top:10px;
+              padding-right:20px;
+              padding-bottom:10px;
+              padding-left:20px;"
+            href="/apply/'.$linkparams.'">
+            Apply
+          </a>
+        </div>
+      </div>';
     $content = $content.$buttons;
 
     $content = "<div class='career-data'><h3 class='wp-block-post-title career-title'>".get_the_title( $id )."</h3>".$content."</div>";
@@ -128,6 +138,11 @@ function register_post_meta_careers() {
       'type' => 'string'
   ) );
   register_post_meta( 'careers', 'lien_different', array(
+      'show_in_rest' => true,
+      'single' => true,
+      'type' => 'string'
+  ) );
+  register_post_meta( 'careers', 'type_de_contrat', array(
       'show_in_rest' => true,
       'single' => true,
       'type' => 'string'
