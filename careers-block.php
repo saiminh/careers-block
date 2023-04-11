@@ -25,7 +25,8 @@
   $id = get_the_ID();
   $meta = get_metadata( 'post', $id );
   $title = get_the_title( $id );
-  $linkparams = '?candidature='.urlencode($title);
+  $urltitle = str_replace('%26%23038%3B', '%26', urlencode($title));
+  $linkparams = '?candidature='.$urltitle;
   if ( isset($meta['duree'][0]) ) {
     $duration = $meta['duree'][0];
     $content = '<div class="role"><span class="label">Role:</span> '.sprintf($duration).'</div>';

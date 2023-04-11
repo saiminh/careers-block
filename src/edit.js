@@ -26,13 +26,13 @@ export default function Edit(
         postType,
         postId
         )?.title;
-        return {
-          meta: _meta,
-          title: _title
-        };
-      },
-      [ postType, postId ]
-      );
+      return {
+        meta: _meta,
+        title: _title
+      };
+    },
+    [ postType, postId ]
+  );
 
       
   const { editEntityRecord } = useDispatch( coreStore );
