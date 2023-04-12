@@ -41,7 +41,8 @@
   }
   if ( isset($meta['type_d_ejob'][0]) ) {
     $department = $meta['type_d_ejob'][0];
-    $linkparams = $linkparams.'&service='.$department;
+    $departmentEncoded = base64_encode($department);
+    $linkparams = $linkparams.'&service='.urlencode($departmentEncoded);
   }
   if ( isset($meta['type_de_contrat'][0]) ) {
     if ( 
