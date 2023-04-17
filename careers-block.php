@@ -27,23 +27,39 @@
   $title = get_the_title( $id );
   $urltitle = str_replace('%26%23038%3B', '%26', urlencode($title));
   $linkparams = '?candidature='.$urltitle;
+  
   if ( isset($meta['duree'][0]) ) {
     $duration = $meta['duree'][0];
     $content = '<div class="role"><span class="label">Role:</span> '.sprintf($duration).'</div>';
+  } else {
+    $content = '<div class="role"><span class="label">Role:</span> No role</div>';
   }
+
   if ( isset($meta['location'][0]) ) {
     $location = $meta['location'][0];
     $content = $content.'<div class="location"><span class="label">Location:</span> '.sprintf($location).'</div>';
   }
+  else {
+    $content = $content.'<div class="location"><span class="label">Location:</span>No location</div>';
+  }
+
   if ( isset($meta['date_de_debut'][0]) ) {
     $startdate = $meta['date_de_debut'][0];
     $content = $content.'<div class="startdate"><span class="label">Start date:</span> '.sprintf($startdate).'</div>';
   }
+  else {
+    $content = $content.'<div class="startdate"><span class="label">Start date:</span>No start date given</div>';
+  }
+
   if ( isset($meta['type_d_ejob'][0]) ) {
     $department = $meta['type_d_ejob'][0];
     $departmentEncoded = base64_encode($department);
     $linkparams = $linkparams.'&service='.urlencode($departmentEncoded);
   }
+  else {
+    $linkparams = $linkparams.'&service='.urlencode(base64_encode('jobs@woodoo.com'));
+  }
+
   if ( isset($meta['type_de_contrat'][0]) ) {
     if ( 
       $meta['type_de_contrat'][0] == 'Apprentissage' OR 
@@ -54,53 +70,61 @@
       $linkparams = $linkparams.'&contrat='.$meta['type_de_contrat'][0];    
     }
   }
+  else {
+    $linkparams = $linkparams.'&contrat=CDI';
+  }
+
   // if ( isset($meta['destinataire'][0]) ) {
   //   $destination = $meta['destinataire'][0];
   //   $content = $content.'<div class="destination">Destination: '.sprintf($destination).'</div>';
   // }
+
   if ( isset($meta['lien_different'][0]) ) {
     $pdflink = $meta['lien_different'][0];
-    $pdf_button_markup = '
-      <div class="wp-block-button is-style-outline">
+  } 
+  else {
+    $pdflink = '';
+  }
+  
+  $pdf_button_markup = '
+    <div class="wp-block-button is-style-outline">
+      <a 
+        class="wp-block-button__link wp-element-button pdf-link" 
+        style="
+          padding-top:10px;
+          padding-right:20px;
+          padding-bottom:10px;
+          padding-left:20px;
+          background-color: transparent;
+          color: currentColor;
+          border-width: 1px;"
+        target="_blank"
+        href="'.sprintf($pdflink).'">
+        Learn More
+      </a>
+    </div>
+  ';
+  if ($pdflink == '') {
+    $pdf_button_markup = '';
+  }
+  $buttons = '
+    <div class="wp-block-buttons is-layout-flex career-buttons">'
+      .$pdf_button_markup.
+      '<div class="wp-block-button is-style-fill">
         <a 
-          class="wp-block-button__link wp-element-button pdf-link" 
+          class="wp-block-button__link wp-element-button apply-link" 
           style="
             padding-top:10px;
             padding-right:20px;
             padding-bottom:10px;
-            padding-left:20px;
-            background-color: transparent;
-            color: currentColor;
-            border-width: 1px;"
-          target="_blank"
-          href="'.sprintf($pdflink).'">
-          Learn More
+            padding-left:20px;"
+          href="/apply/'.$linkparams.'">
+          Apply
         </a>
       </div>
-    ';
-    if ($pdflink == '') {
-      $pdf_button_markup = '';
-    }
-    $buttons = '
-      <div class="wp-block-buttons is-layout-flex career-buttons">'
-        .$pdf_button_markup.
-        '<div class="wp-block-button is-style-fill">
-          <a 
-            class="wp-block-button__link wp-element-button apply-link" 
-            style="
-              padding-top:10px;
-              padding-right:20px;
-              padding-bottom:10px;
-              padding-left:20px;"
-            href="/apply/'.$linkparams.'">
-            Apply
-          </a>
-        </div>
-      </div>';
-    $content = $content.$buttons;
-
-    $content = "<div class='career-data'><h3 class='wp-block-post-title career-title'>".get_the_title( $id )."</h3>".$content."</div>";
-  }
+    </div>';
+  $content = $content.$buttons;
+  $content = "<div class='career-data'><h3 class='wp-block-post-title career-title'>".get_the_title( $id )."</h3>".$content."</div>";
   return $content;
 }
 function create_block_careers_block_block_init() {

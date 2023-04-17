@@ -1,1 +1,30 @@
-.editor-styles-wrapper .wp-block-button .wp-block-button__link.is-style-outline.pdf-link,.editor-styles-wrapper .wp-block-button.is-style-outline>.wp-block-button__link.pdf-link,.editor-styles-wrapper .wp-block-button__link.pdf-link,.editor-styles-wrapper .wp-element-button.pdf-link,.wp-block-button .wp-block-button__link.is-style-outline:not(.has-background).pdf-link,.wp-block-button.is-style-outline>.wp-block-button__link:not(.has-background).pdf-link{background-color:transparent;border-width:1px;color:currentColor;padding:10px 20px}.editor-styles-wrapper .wp-block-button .wp-block-button__link.is-style-outline.apply-link,.editor-styles-wrapper .wp-block-button.is-style-outline>.wp-block-button__link.apply-link,.editor-styles-wrapper .wp-block-button__link.apply-link,.editor-styles-wrapper .wp-element-button.apply-link,.wp-block-button .wp-block-button__link.is-style-outline:not(.has-background).apply-link,.wp-block-button.is-style-outline>.wp-block-button__link:not(.has-background).apply-link{padding:10px 20px}
+/*!****************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[4].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[4].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[4].use[3]!./src/editor.scss ***!
+  \****************************************************************************************************************************************************************************************************************************************/
+.wp-block-button .wp-block-button__link.is-style-outline:not(.has-background).pdf-link,
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background).pdf-link,
+.editor-styles-wrapper .wp-block-button .wp-block-button__link.is-style-outline.pdf-link,
+.editor-styles-wrapper .wp-block-button.is-style-outline > .wp-block-button__link.pdf-link,
+.editor-styles-wrapper .wp-element-button.pdf-link,
+.editor-styles-wrapper .wp-block-button__link.pdf-link {
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+  background-color: transparent;
+  color: currentColor;
+  border-width: 1px;
+}
+.wp-block-button .wp-block-button__link.is-style-outline:not(.has-background).apply-link,
+.wp-block-button.is-style-outline > .wp-block-button__link:not(.has-background).apply-link,
+.editor-styles-wrapper .wp-block-button .wp-block-button__link.is-style-outline.apply-link,
+.editor-styles-wrapper .wp-block-button.is-style-outline > .wp-block-button__link.apply-link,
+.editor-styles-wrapper .wp-element-button.apply-link,
+.editor-styles-wrapper .wp-block-button__link.apply-link {
+  padding-top: 10px;
+  padding-right: 20px;
+  padding-bottom: 10px;
+  padding-left: 20px;
+}
+
+/*# sourceMappingURL=index.css.map*/

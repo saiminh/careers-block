@@ -35,7 +35,10 @@ export default function Edit(
   );
 
   function sanitizeContractType( type ) {
-    if ( type == 'Apprentissage' || type == 'Stage' ) {
+    if ( type == '' ) {
+      return 'CDI';
+    }
+    else if ( type == 'Apprentissage' || type == 'Stage' ) {
       return 'Internship';
     }
     else {
@@ -48,6 +51,7 @@ export default function Edit(
   const [ duration, setDuration ] = useState( meta.duree );
   const [ startdate, setStartDate ] = useState( meta.date_de_debut );
   const [ type, setType ] = useState( sanitizeContractType(meta.type_de_contrat) );
+  const [ toemail, setToEmail ] = useState( meta.type_d_ejob == '' ? 'jobs@woodoo.com' : meta.type_d_ejob );
   const [ pdf, setPdf ] = useState( meta.lien_different );
 
   const updateMetaValue = ( newValue, field ) => {
@@ -85,6 +89,13 @@ export default function Edit(
         meta: newMeta,
       } );
       setType( newValue );
+    }
+    if (field == 'type_d_ejob' ) { 
+      const newMeta = { ...meta, type_d_ejob: newValue };
+      editEntityRecord( 'postType', postType, postId, {
+        meta: newMeta,
+      } );
+      setToEmail( newValue );
     }
   };
   const isDescendentOfQueryLoop = Number.isFinite( queryId );
@@ -138,12 +149,18 @@ export default function Edit(
           label={ __( 'Type of contract', 'career-block' ) }
           value={ type }
           options={ [
-            { label: 'CDI', value: 'CDI' },
+            { label: 'CDI', value: 'CDI'},
             { label: 'CDD', value: 'CDD' },
             { label: 'Internship', value: 'Internship' },
             { label: 'Freelance', value: 'Freelance' },
           ] }
           onChange={ ( newValue ) => updateMetaValue( newValue, 'type_de_contrat' ) }
+        />
+        <TextControl
+          label={ __( 'Send to:', 'career-block' ) }
+          value={ toemail }
+          defaultValue='jobs@woodoo.com'
+          onChange={ ( newValue ) => updateMetaValue( newValue, 'type_d_ejob' ) }
         />
         <MediaPlaceholder
           icon={ 'pdf' }
