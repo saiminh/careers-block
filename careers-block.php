@@ -160,12 +160,13 @@ function render_career_meta() {
   return $content;
 }
 function create_block_careers_block_block_init() {
- 
-  pll_register_string( 'careers-apply', 'Apply', 'polylang', false );
-  pll_register_string( 'careers-learnmore', 'Learn more', 'polylang', false );
-  pll_register_string( 'careers-role', 'Role', 'polylang', false );
-  pll_register_string( 'careers-location', 'Location', 'polylang', false );
-  pll_register_string( 'careers-start-date', 'Start date', 'polylang', false );
+  if (function_exists('pll_register_string')) {
+    pll_register_string( 'careers-apply', 'Apply', 'polylang', false );
+    pll_register_string( 'careers-learnmore', 'Learn more', 'polylang', false );
+    pll_register_string( 'careers-role', 'Role', 'polylang', false );
+    pll_register_string( 'careers-location', 'Location', 'polylang', false );
+    pll_register_string( 'careers-start-date', 'Start date', 'polylang', false );
+  }
 
   register_block_type( __DIR__ . '/build', array(
     'render_callback' => 'render_career_meta',
