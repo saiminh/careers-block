@@ -1,11 +1,11 @@
 <?php
 /**
  * Plugin Name:       Careers Block
- * Description:       Example block scaffolded with Create Block tool.
+ * Description:       Block to display and change career meta data.
  * Requires at least: 6.1
  * Requires PHP:      7.0
  * Version:           0.1.0
- * Author:            The WordPress Contributors
+ * Author:            Simon Flöter
  * License:           GPL-2.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       careers-block
@@ -21,34 +21,66 @@
  * @see https://developer.wordpress.org/reference/functions/register_block_type/
  */
 
- function render_career_meta() {
+
+
+function render_career_meta() {
+   
+  if (function_exists('pll__')) {
+    $transl_role = pll__('Role');
+    $transl_location = pll__('Location');
+    $transl_startdate = pll__('Start date');
+    $transl_apply = pll__('Apply');
+    $transl_learnmore = pll__('Learn more');
+    $transl_no_role = pll__('No role');
+    $transl_no_location = pll__('No location');
+    $transl_no_startdate = pll__('No start date given');
+   } else {
+    $transl_role = 'Role';
+    $transl_location = 'Location';
+    $transl_startdate = 'Start date';
+    $transl_apply = 'Apply';
+    $transl_learnmore = 'Learn more';
+    $transl_no_role = 'No role';
+    $transl_no_location = 'No location';
+    $transl_no_startdate = 'No start date given';
+   }
+
   $id = get_the_ID();
   $meta = get_metadata( 'post', $id );
   $title = get_the_title( $id );
   $urltitle = str_replace('%26%23038%3B', '%26', urlencode($title));
   $linkparams = '?candidature='.$urltitle;
+  if(ICL_LANGUAGE_CODE=='en') {
+    $language = 'en';
+    $apply_page_name = 'apply';
+  } elseif(ICL_LANGUAGE_CODE=='fr') {
+    $language = 'fr';
+    $apply_page_name = 'postuler';
+  } else {
+    $language = 'en';
+  };
   
   if ( isset($meta['duree'][0]) ) {
     $duration = $meta['duree'][0];
-    $content = '<div class="role"><span class="label">Role:</span> '.sprintf($duration).'</div>';
+    $content = '<div class="role"><span class="label">'.$transl_role.':</span> '.sprintf($duration).'</div>';
   } else {
-    $content = '<div class="role"><span class="label">Role:</span> No role</div>';
+    $content = '<div class="role"><span class="label">'.$transl_role.':</span> '.$transl_no_role.'</div>';
   }
 
   if ( isset($meta['location'][0]) ) {
     $location = $meta['location'][0];
-    $content = $content.'<div class="location"><span class="label">Location:</span> '.sprintf($location).'</div>';
+    $content = $content.'<div class="location"><span class="label">'.$transl_location.':</span> '.sprintf($location).'</div>';
   }
   else {
-    $content = $content.'<div class="location"><span class="label">Location:</span>No location</div>';
+    $content = $content.'<div class="location"><span class="label">'.$transl_location.':</span> '.$transl_no_location.'</div>';
   }
 
   if ( isset($meta['date_de_debut'][0]) ) {
     $startdate = $meta['date_de_debut'][0];
-    $content = $content.'<div class="startdate"><span class="label">Start date:</span> '.sprintf($startdate).'</div>';
+    $content = $content.'<div class="startdate"><span class="label">'.$transl_startdate.':</span> '.sprintf($startdate).'</div>';
   }
   else {
-    $content = $content.'<div class="startdate"><span class="label">Start date:</span>No start date given</div>';
+    $content = $content.'<div class="startdate"><span class="label">'.$transl_startdate.':</span> '.$transl_no_startdate.'</div>';
   }
 
   if ( isset($meta['type_d_ejob'][0]) ) {
@@ -99,9 +131,9 @@
           color: currentColor;
           border-width: 1px;"
         target="_blank"
-        href="'.sprintf($pdflink).'">
-        Learn More
-      </a>
+        href="'.sprintf($pdflink).'">'.
+        $transl_learnmore
+      .'</a>
     </div>
   ';
   if ($pdflink == '') {
@@ -118,9 +150,9 @@
             padding-right:20px;
             padding-bottom:10px;
             padding-left:20px;"
-          href="/apply/'.$linkparams.'">
-          Apply
-        </a>
+          href="/'.$apply_page_name.'/'.$linkparams.'">'.
+            $transl_apply
+        .'</a>
       </div>
     </div>';
   $content = $content.$buttons;
@@ -128,6 +160,13 @@
   return $content;
 }
 function create_block_careers_block_block_init() {
+ 
+  pll_register_string( 'careers-apply', 'Apply', 'polylang', false );
+  pll_register_string( 'careers-learnmore', 'Learn more', 'polylang', false );
+  pll_register_string( 'careers-role', 'Role', 'polylang', false );
+  pll_register_string( 'careers-location', 'Location', 'polylang', false );
+  pll_register_string( 'careers-start-date', 'Start date', 'polylang', false );
+
   register_block_type( __DIR__ . '/build', array(
     'render_callback' => 'render_career_meta',
   ) );
